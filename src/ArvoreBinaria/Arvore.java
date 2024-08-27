@@ -1,5 +1,6 @@
 package ArvoreBinaria;
 
+
 public class Arvore {
 
   public static void main(String[] args) {
@@ -17,8 +18,7 @@ public class Arvore {
     arvore.inserir(no4, arvore);
     arvore.inserir(no5, arvore);
 
-    arvore.buscaPosOrdemIterativa(no4, arvore);
-    
+    arvore.preOrdemSemPilha(arvore.raiz);
 
 
   }
@@ -163,7 +163,100 @@ class ArvoreBinaria {
           System.out.println(no.chave);
       }
   }
+  
+  public static No buscaIterativa(int valor, ArvoreBinaria arvore) {
+	  No raiz = arvore.raiz;
+	    while( raiz != null) {
+	    	if( raiz.chave == valor) {
+	    		System.out.println("Valor existe na árvore");
+	            return raiz;
+	        }
+	        else if( valor < raiz.chave) {
+	            raiz = raiz.esquerda;
+	        }
+	        else {
+	            raiz = raiz.direita;
+	        }
+	    }
+	    System.out.println("Elemento nao existe");
+	    return null;
+  }
+  public static void preOrdemSemPilha(No raiz) {
+	    No atual = raiz;
+	    while (atual != null) {
+	        System.out.println(atual.chave); // Processa o nó atual
+	        
+	        if (atual.esquerda != null) {
+	            No temp = atual.esquerda;
+	            while (temp.direita != null && temp.direita != atual) {
+	                temp = temp.direita;
+	            }
+	            
+	            if (temp.direita == null) {
+	                temp.direita = atual;
+	                atual = atual.esquerda;
+	            } else {
+	                temp.direita = null;
+	                atual = atual.direita;
+	            }
+	        } else {
+	            atual = atual.direita;
+	        }
+	    }
+	}
+  public static void emOrdemSemPilha(No raiz) {
+	    No atual = raiz;
+	    while (atual != null) {
+	        if (atual.esquerda == null) {
+	            System.out.println(atual.chave); // Processa o nó atual
+	            atual = atual.direita; // Move para o filho direito
+	        } else {
+	            No predecessor = atual.esquerda;
+	            while (predecessor.direita != null && predecessor.direita != atual) {
+	                predecessor = predecessor.direita;
+	            }
 
+	            if (predecessor.direita == null) {
+	                predecessor.direita = atual;
+	                atual = atual.esquerda;
+	            } else {
+	                predecessor.direita = null;
+	                System.out.println(atual.chave); // Processa o nó atual
+	                atual = atual.direita; // Move para o filho direito
+	            }
+	        }
+	    }
+	}
+  public static void posOrdemSemPilha(No raiz) {
+	    No atual = raiz;
+	    No anterior = null;
+
+	    while (atual != null) {
+	        if (atual.direita == null || atual.direita == anterior) {
+	            System.out.println(atual.chave); // Processa o nó atual
+	            anterior = atual;
+	            atual = atual.esquerda;
+	        } else {
+	            No temp = atual.direita;
+	            while (temp.esquerda != null && temp.esquerda != atual) {
+	                temp = temp.esquerda;
+	            }
+
+	            if (temp.esquerda == null) {
+	                temp.esquerda = atual;
+	                atual = atual.direita;
+	            } else {
+	                temp.esquerda = null;
+	                System.out.println(atual.chave); // Processa o nó atual
+	                anterior = atual;
+	                atual = atual.esquerda;
+	            }
+	        }
+	    }
+	}
+
+  
+  //QUESTAO DA PROVA, VTNC
   public No buscaPosOrdemIterativa(No noProcurado, ArvoreBinaria arvore) {
     Pilha pilha = new Pilha(100);
     No ultimoVisitado = null;
@@ -175,7 +268,8 @@ class ArvoreBinaria {
             raiz = raiz.esquerda;
         }
 
-        raiz = pilha.peek();
+        raiz = pilha.
+        		peek();
 
         if (raiz.direita != null && raiz.direita != ultimoVisitado) {
             raiz = raiz.direita;
@@ -237,4 +331,3 @@ class Pilha {
         }
     }
 }
-
